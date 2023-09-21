@@ -1,0 +1,41 @@
+--order numbers to have a specific format: "ORDYYYYMMDDNNNN", 
+--where "YYYYMMDD" represents the date and "NNNN" represents a four-digit sequential number 
+
+CREATE SEQUENCE order_sequence
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 9999
+    CYCLE
+    CACHE 10;
+    
+CREATE OR REPLACE FUNCTION generate_order_number RETURN VARCHAR2 AS
+    order_date VARCHAR2(8);
+    order_number VARCHAR2(20);
+BEGIN
+    -- Get the current date 
+    order_date := TO_CHAR(SYSDATE, 'YYYYMMDD');
+
+    -- Get the next value from the sequence
+    SELECT TO_CHAR(order_sequence.NEXTVAL, 'FM0000') INTO order_number FROM DUAL;
+
+    -- Concatenate the order number
+    order_number := 'ORD' || order_date || order_number;
+
+    RETURN order_number;
+END;   
+
+SELECT generate_order_number FROM DUAL;
+
+drop sequence order_sequence;
+
+ALTER SEQUENCE order_sequence
+    INCREMENT BY 2
+    START WITH 200000;
+
+-- Alter the cache size of the sequence
+ALTER SEQUENCE order_sequence
+    CACHE 50;
+
+-- Disable cycling of the sequence
+ALTER SEQUENCE order_sequence
+    NOCYCLE;

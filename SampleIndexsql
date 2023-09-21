@@ -1,0 +1,9 @@
+SELECT 
+    *
+FROM 
+    all_indexes
+WHERE 
+table_name= 'CommentPro';
+
+Create index product_name_i  on Aproducts(ProductName)
+

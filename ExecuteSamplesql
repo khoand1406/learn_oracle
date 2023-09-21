@@ -1,0 +1,10 @@
+set serveroutput on
+DECLARE
+    v_user_id NUMBER := 123;         -- Replace with the actual user_id
+    v_product_id NUMBER := 456;      -- Replace with the actual product_id
+    v_comment_count NUMBER;          -- Declare a variable to store the comment count
+BEGIN
+    count_comments_by_user_product(v_user_id, v_product_id, v_comment_count);
+    -- You can now use v_comment_count to access the comment count.
+    DBMS_OUTPUT.PUT_LINE('Comment count: ' || v_comment_count);
+END;

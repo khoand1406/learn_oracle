@@ -1,0 +1,29 @@
+create or replace  PROCEDURE count_comments_by_user_product (
+    user_id_in NUMBER,
+    product_id_in NUMBER,
+    comment_count_out OUT NUMBER
+) AS
+BEGIN
+    -- Count the number of comments for the specified user and product
+    SELECT COUNT(*) INTO comment_count_out
+    FROM commentpro
+    WHERE userid = user_id_in AND productid = product_id_in;
+    
+    -- Display the count (optional)
+    DBMS_OUTPUT.PUT_LINE('User ' || user_id_in || ' made ' || comment_count_out || ' comments on Product ' || product_id_in);
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('User or product not found.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+END count_comments_by_user_product;
+
+DECLARE
+    v_user_id NUMBER := 123;         -- Replace with the actual user_id
+    v_product_id NUMBER := 456;      -- Replace with the actual product_id
+    v_comment_count NUMBER;          -- Declare a variable to store the comment count
+BEGIN
+    count_comments_by_user_product(v_user_id, v_product_id, v_comment_count);
+    -- You can now use v_comment_count to access the comment count.
+    DBMS_OUTPUT.PUT_LINE('Comment count: ' || v_comment_count);
+END;
