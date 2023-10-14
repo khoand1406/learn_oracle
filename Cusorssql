@@ -1,0 +1,18 @@
+--select * from agent_product
+
+declare cursor agent_product_cursor is
+    select * from agent_product 
+    order by price desc;
+    
+    reco_agent_product agent_product_cursor%RowType;
+    begin
+    open agent_product_cursor;
+    
+    loop 
+    fetch agent_product_cursor into reco_agent_product;
+    exit when agent_product_cursor%NotFound;
+    
+    dbms_output.put_line('product' || reco_agent_product.productname || 'have' || reco_agent_product.quantity || 'product in agent' || reco_agent_product.agentname);
+    end loop;
+    close agent_product_cursor;
+    end;

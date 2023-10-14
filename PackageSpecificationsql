@@ -1,0 +1,26 @@
+create or replace package ordermgt as
+--declare variables, constants, etc..
+    gc_shipped_status  CONSTANT VARCHAR(10) := 'Shipped';
+    gc_pending_status CONSTANT VARCHAR(10) := 'Pending';
+    gc_canceled_status CONSTANT VARCHAR(10) := 'Canceled';
+    
+    cursor get_current_order(l_order_id Number)
+    is
+    select o.orderid, o.payment, o.orderdate, o.shipdate, o.receiveddate, o.status, a.username, c.quantity
+    from orders o
+    inner join cart c on c.orderid= o.orderid
+    inner join account a on a.userid= c.userid
+    where o.orderid= l_order_id;
+    
+    function get_orders(orderid number)
+    return number;
+    
+    function count_orders(date_input date)
+    return number;
+ end ordermgt;   
+ 
+ 
+ 
+    
+    
+    
